@@ -1,0 +1,253 @@
+/*
+ * Source stylesheet for the Adamosexchange landing page.
+ * Compiled into /assets/styles.css with the Tailwind CSS v4 CLI:
+ *   npx @tailwindcss/cli -i assets/src/styles.css -o assets/styles.css --minify
+ */
+@import "tailwindcss" source(none);
+@source "../../index.html";
+@source "../app.js";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-background: #0B0E14;
+  --color-foreground: #F4F6FB;
+  --color-card: #121722;
+  --color-card-foreground: #F4F6FB;
+  --color-primary: #F5B800;
+  --color-primary-foreground: #1A1300;
+  --color-accent: #00A8FF;
+  --color-accent-foreground: #FFFFFF;
+  --color-muted: #1A2030;
+  --color-muted-foreground: #9AA3B8;
+  --color-border: rgb(255 255 255 / 0.1);
+  --color-input: rgb(255 255 255 / 0.15);
+  --color-ring: #F5B800;
+  --color-destructive: #EF4444;
+
+  --font-sans: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Cairo", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --animate-ticker: ticker 45s linear infinite;
+  --animate-wa-ping: wa-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Raw CSS variables (some markup references var(--primary)) */
+:root {
+  --background: #0B0E14;
+  --foreground: #F4F6FB;
+  --primary: #F5B800;
+  --accent: #00A8FF;
+  --melbet: #F5B800;
+  --onexbet: #00A8FF;
+  --whatsapp: #25D366;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-border);
+  }
+
+  html {
+    background-color: #0B0E14;
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: #0B0E14;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgb(245 184 0 / 0.35);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+/* ---------- Live ticker (top bar) ---------- */
+.ticker-track {
+  animation: var(--animate-ticker);
+  will-change: transform;
+}
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- Brand cards ---------- */
+.brand-card {
+  isolation: isolate;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.brand-card:hover {
+  transform: translateY(-4px);
+}
+.brand-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Melbet — gold #F5B800 */
+.brand-card--melbet {
+  border-color: rgb(245 184 0 / 0.7);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgb(245 184 0 / 0.16), transparent 60%),
+    rgb(11 14 20 / 0.85);
+  box-shadow: 0 0 45px -12px #F5B800, inset 0 1px 0 rgb(255 210 63 / 0.18);
+}
+.brand-card--melbet:hover {
+  border-color: #F5B800;
+  box-shadow: 0 0 64px -8px #F5B800, inset 0 1px 0 rgb(255 210 63 / 0.25);
+}
+
+/* 1xBet — blue #00A8FF */
+.brand-card--1xbet {
+  border-color: rgb(0 168 255 / 0.7);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgb(0 168 255 / 0.16), transparent 60%),
+    rgb(11 14 20 / 0.85);
+  box-shadow: 0 0 45px -12px #00A8FF, inset 0 1px 0 rgb(63 193 255 / 0.18);
+}
+.brand-card--1xbet:hover {
+  border-color: #00A8FF;
+  box-shadow: 0 0 64px -8px #00A8FF, inset 0 1px 0 rgb(63 193 255 / 0.25);
+}
+
+/* Copy-code button feedback */
+[data-copy].is-copied > span:last-child {
+  background: #25D366;
+  color: #06210F;
+}
+
+/* ---------- Bonus calculator presets ---------- */
+[data-amount] {
+  border-color: rgb(255 255 255 / 0.15);
+  background-color: rgb(255 255 255 / 0.05);
+  color: var(--color-foreground);
+}
+[data-amount]:hover {
+  border-color: rgb(245 184 0 / 0.5);
+}
+[data-amount].is-active {
+  border-color: #F5B800;
+  background-color: #F5B800;
+  color: #1A1300;
+}
+
+#bonus-amount {
+  color: var(--color-foreground);
+  background-color: rgb(255 255 255 / 0.04);
+}
+#bonus-amount:focus {
+  border-color: #F5B800;
+  box-shadow: 0 0 0 3px rgb(245 184 0 / 0.25);
+}
+
+/* ---------- Payment method cards (white, rounded) ---------- */
+.pay-card {
+  background-color: #FFFFFF;
+  border-radius: 1.25rem;
+  padding: 0.9rem 1.1rem;
+  box-shadow:
+    0 12px 30px -14px rgb(0 0 0 / 0.9),
+    0 0 0 1px rgb(255 255 255 / 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.pay-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 18px 40px -14px rgb(0 0 0 / 0.9),
+    0 0 40px -10px #F5B800;
+}
+.pay-card img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* ---------- Floating WhatsApp button — green #25D366 ---------- */
+.wa-float {
+  transition: transform 0.2s ease;
+}
+.wa-float:hover {
+  transform: translateY(-2px) scale(1.04);
+}
+.wa-float > span:first-child {
+  background-color: #25D366;
+  box-shadow: 0 8px 30px -4px #25D366;
+}
+/* Pulsing halo behind the icon and on the "online" dots */
+.wa-float > span:first-child > span.absolute.inset-0,
+.wa-float span.absolute.inset-0.bg-\[\#4ADE80\] {
+  animation: var(--animate-wa-ping);
+}
+
+@keyframes wa-ping {
+  75%,
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .wa-float > span:last-child {
+    display: none;
+  }
+}
+
+/* ---------- Entrance animation ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track,
+  .wa-float span {
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
